@@ -161,8 +161,8 @@ def load_para_data(params, data):
             assert name != 'train' or params.n_para != 0
 
             # load data
-            data1 = load_binarized(path.replace('XX', lang1), params)
-            data2 = load_binarized(path.replace('XX', lang2), params)
+            data1 = load_binarized(path.replace('XX', 'ref.' + lang1), params)
+            data2 = load_binarized(path.replace('XX', 'src.' + lang2), params)
             set_parameters(params, data1['dico'])
             set_parameters(params, data2['dico'])
 
@@ -338,10 +338,10 @@ def check_all_data_params(params):
         assert lang1 < lang2 and lang1 in params.langs and lang2 in params.langs
         assert train_path == '' or os.path.isfile(train_path.replace('XX', lang1))
         assert train_path == '' or os.path.isfile(train_path.replace('XX', lang2))
-        assert os.path.isfile(valid_path.replace('XX', lang1))
-        assert os.path.isfile(valid_path.replace('XX', lang2))
-        assert os.path.isfile(test_path.replace('XX', lang1))
-        assert os.path.isfile(test_path.replace('XX', lang2))
+        assert os.path.isfile(valid_path.replace('XX', 'ref.' + lang1))
+        assert os.path.isfile(valid_path.replace('XX', 'src.' + lang2))
+        assert os.path.isfile(test_path.replace('XX', 'ref.' + lang1))
+        assert os.path.isfile(test_path.replace('XX', 'src.' + lang2))
 
     # check back-parallel datasets
     params.back_dataset = {k: v for k, v in [x.split(':') for x in params.back_dataset.split(';') if len(x) > 0]}
