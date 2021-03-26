@@ -271,6 +271,6 @@ echo "Concatenated data in: $CONCAT_BPE"
 
 if ! [[ -f "$CONCAT_BPE.vec" ]]; then
   echo "Training fastText on $CONCAT_BPE..."
-  $FASTTEXT skipgram -epoch $N_EPOCHS -minCount 0 -dim 512 -thread $N_THREADS -ws 5 -neg 10 -input $CONCAT_BPE -output $CONCAT_BPE
+  $FASTTEXT skipgram -epoch $N_EPOCHS -minCount 0 -dim 256 -thread $N_THREADS -ws 5 -neg 10 -input $CONCAT_BPE -output $CONCAT_BPE
 fi
 echo "Cross-lingual embeddings in: $CONCAT_BPE.vec"

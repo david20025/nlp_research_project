@@ -9,6 +9,7 @@ import os
 import time
 import json
 import argparse
+import wandb
 
 from src.data.loader import check_all_data_params, load_data
 from src.utils import bool_flag, initialize_exp
@@ -31,13 +32,13 @@ def get_parser():
     parser.add_argument("--seed", type=int, default=-1,
                         help="Random generator seed (-1 for random)")
     # autoencoder parameters
-    parser.add_argument("--emb_dim", type=int, default=512,
+    parser.add_argument("--emb_dim", type=int, default=256,
                         help="Embedding layer size")
     parser.add_argument("--n_enc_layers", type=int, default=4,
                         help="Number of layers in the encoders")
     parser.add_argument("--n_dec_layers", type=int, default=4,
                         help="Number of layers in the decoders")
-    parser.add_argument("--hidden_dim", type=int, default=512,
+    parser.add_argument("--hidden_dim", type=int, default=256,
                         help="Hidden layer size")
     parser.add_argument("--lstm_proj", type=bool_flag, default=False,
                         help="Projection layer between decoder LSTM and output layer")
@@ -48,7 +49,7 @@ def get_parser():
     parser.add_argument("--attention", type=bool_flag, default=True,
                         help="Use an attention mechanism")
     if not parser.parse_known_args()[0].attention:
-        parser.add_argument("--enc_dim", type=int, default=512,
+        parser.add_argument("--enc_dim", type=int, default=256,
                             help="Latent space dimension")
         parser.add_argument("--proj_mode", type=str, default="last",
                             help="Projection mode (proj / pool / last)")
@@ -232,7 +233,10 @@ def get_parser():
 
 
 def main(params):
-    os.environ['CUDA_VISIBLE_DEVICES'] = '2, 3'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '1, 3'
+    
+    wandb.init(entity='alexandrayakovleva', project='umt')
+    wandb.config.update(vars(params))
 
     # check parameters
     assert params.exp_name
@@ -270,7 +274,7 @@ def main(params):
     assert params.epoch_size > 0
 
     # start training
-    for _ in range(trainer.epoch, params.max_epoch):
+    for ep in range(trainer.epoch, params.max_epoch):
 
         logger.info("====================== Starting epoch %i ... ======================" % trainer.epoch)
 

@@ -10,6 +10,7 @@ import time
 from logging import getLogger
 import numpy as np
 import torch
+import wandb
 from torch.nn import functional as F
 from torch.nn.utils import clip_grad_norm_
 
@@ -425,6 +426,7 @@ class TrainerMT(MultiprocessingEventLoop):
 
         # optimizer
         self.zero_grad(['lm'])
+        wandb.log({'lm_loss': loss.item()})
         loss.backward()
         self.update_params(['lm'])
 
@@ -497,6 +499,7 @@ class TrainerMT(MultiprocessingEventLoop):
 
         # optimizer
         self.zero_grad(['enc', 'dec'])
+        wandb.log({'enc_dec_loss': loss.item()})
         loss.backward()
         self.update_params(['enc', 'dec'])
 

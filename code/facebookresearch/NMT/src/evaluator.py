@@ -11,6 +11,7 @@ from collections import OrderedDict
 from logging import getLogger
 import numpy as np
 import torch
+import wandb
 from torch import nn
 
 from .utils import restore_segmentation
@@ -264,6 +265,7 @@ class EvaluatorMT(object):
                 for data_type in ['valid', 'test']:
                     self.eval_back(lang1, lang2, lang3, data_type, scores)
 
+        wandb.log(scores)
         return scores
 
 
