@@ -36,6 +36,7 @@ def reload_txt_emb(path, dim):
     assert os.path.isfile(path) and dim > 0
     word2id = {}
     vectors = []
+    print(path)
 
     logger.info("Reloading embeddings from %s ..." % path)
 

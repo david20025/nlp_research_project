@@ -95,6 +95,7 @@ class MonolingualDataset(Dataset):
         """
         Only retain a subset of the dataset.
         """
+        print(a, b, len(self.pos))
         assert 0 <= a <= b <= len(self.pos)
         if a < b:
             self.pos = self.pos[a:b]

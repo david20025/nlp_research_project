@@ -261,7 +261,7 @@ def load_mono_data(params, data):
     if len(params.mono_dataset) == 0:
         return
 
-    for lang, paths in params.mono_dataset.items():
+    for lang, (n_mono, paths) in params.mono_dataset.items():
 
         assert lang in params.langs
         logger.info('============ Monolingual data (%s)' % lang)
@@ -293,8 +293,8 @@ def load_mono_data(params, data):
                 mono_data.remove_long_sentences(params.max_len)
 
             # select a subset of sentences
-            if name == 'train' and params.n_mono != -1:
-                mono_data.select_data(0, params.n_mono)
+            if name == 'train' and n_mono != -1:
+                mono_data.select_data(0, n_mono)
 
             datasets.append((name, mono_data))
 
@@ -322,10 +322,10 @@ def check_all_data_params(params):
     if len(params.mono_dataset) > 0:
         assert type(params.mono_dataset) is dict
         assert all(lang in params.langs for lang in params.mono_dataset.keys())
-        assert all(len(v.split(',')) == 3 for v in params.mono_dataset.values())
-        params.mono_dataset = {k: tuple(v.split(',')) for k, v in params.mono_dataset.items()}
+        assert all(len(v.split(',')) == 4 for v in params.mono_dataset.values())
+        params.mono_dataset = {k: (int(v.split(',')[0]), v.split(',')[1:]) for k, v in params.mono_dataset.items()}
         assert all(all(((i > 0 and path == '') or os.path.isfile(path)) for i, path in enumerate(paths))
-                   for paths in params.mono_dataset.values())
+                   for n, paths in params.mono_dataset.values())
 
     # check parallel datasets
     params.para_dataset = {k: v for k, v in [x.split(':') for x in params.para_dataset.split(';') if len(x) > 0]}
