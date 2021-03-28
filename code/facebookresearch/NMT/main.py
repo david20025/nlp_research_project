@@ -233,18 +233,10 @@ def get_parser():
 
 
 def main(params):
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     os.environ['CUDA_VISIBLE_DEVICES'] = '1, 3'
     
     wandb.init(entity='alexandrayakovleva', project='umt')
     wandb.config.update(vars(params))
-=======
-    os.environ['CUDA_VISIBLE_DEVICES'] = '2, 6'
->>>>>>> Stashed changes
-=======
-    os.environ['CUDA_VISIBLE_DEVICES'] = '2, 6'
->>>>>>> Stashed changes
 
     # check parameters
     assert params.exp_name
